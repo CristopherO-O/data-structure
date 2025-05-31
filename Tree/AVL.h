@@ -36,6 +36,11 @@ void destroyAVL(AVL* root) {
     }
 }
 
+int countNodes(Node* root) {
+    if (root == NULL) return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
 int isEmpty(AVL* root) {
     if (root == NULL) return 1;
     return (*root == NULL);
