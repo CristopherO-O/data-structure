@@ -1,0 +1,18 @@
+os arquivos da pasta são:
+    Graph.h:
+        A Estrutura do grafo
+    Graph.c:
+        A implementação das funções do TAD
+    Graph.txt:
+        o arquivo que contem o grafo a ser lido
+    Dijkstra.c:
+        Onde esta a main e a implementação do algoritimo de Dijkstra
+
+
+---------------------------------------------------------------------------------
+para compilar usa-se(compilei no windows):
+    gcc Dijkstra.c Graph.c -o programa
+
+por fim é só executar o programa normalmente:
+    .\programa
+    
