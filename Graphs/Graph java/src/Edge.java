@@ -6,19 +6,32 @@
 
 
 package src;
-public class Edge{
-    private final int node1;
-    private final int node2;
-    private final int weight;
 
-    public Edge(int node1, int node2, int weight){
+public class Edge {
+    private int node1;
+    private int node2;
+    private int weight;
+    private String name;
+
+    // ----- construtor -----
+    public Edge(int node1, int node2, int weight) {
         this.node1 = node1;
         this.node2 = node2;
         this.weight = weight;
+        this.name = "";
+    }
+    
+    // ----- Construtor que aceita o nome para a aresta -----
+    public Edge(int node1, int node2, int weight, String name) {
+        this.node1 = node1;
+        this.node2 = node2;
+        this.weight = weight;
+        this.name = name;
     }
 
-    public int getNode1(){ return this.node1; }
-    public int getNode2(){ return this.node2; }
-    public int getWeight(){ return this.weight; }
-
+    // ----- getters -----
+    public int getNode1() { return node1; }
+    public int getNode2() { return node2; }
+    public int getWeight() { return weight; }
+    public String getName() { return name; }
 }

@@ -1,7 +1,7 @@
 /*
  * Autor: Cristopher Resende
  * Data: 20/11/2025
- * Descrição: estrutura do Grafo com ArraList de arestas quando eu decidi mudar pra lista de adjacencia ja era tarde de mais
+ * Descrição: estrutura do Grafo com ArrayList de arestas quando eu decidi mudar pra lista de adjacencia ja era tarde de mais
  */
 
 package src;
@@ -44,7 +44,11 @@ public class Graph {
     public void printGraph(){
         System.out.printf("The graph has %d nodes and %d edges:\n", nodesNum, quantity);
         for(Edge e : edges){
-            System.out.printf("%d -> %d ; weight:%d\n", e.getNode1(), e.getNode2(), e.getWeight());
+            if(e.getName() == ""){
+                System.out.printf("%d -> %d ; weight:%d\n", e.getNode1(), e.getNode2(), e.getWeight());
+            } else {
+                System.out.printf("%d -> %d ; weight:%d; name: %s\n", e.getNode1(), e.getNode2(), e.getWeight(), e.getName());
+            }
         }
     }
 
@@ -77,6 +81,108 @@ public class Graph {
 
         return g;
     }
+
+    // ----- lê arquivo de GML-----
+    //essa foi a unica parte do codigo que eu nem tentei mexer altissimo em GPT
+    public static Graph loadGraphFromGML(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+
+        String line;
+        // Estruturas para armazenar dados de arestas temporariamente
+        List<Integer> tempSources = new ArrayList<>();
+        List<Integer> tempTargets = new ArrayList<>();
+        List<String> tempNames = new ArrayList<>();
+        HashSet<Integer> gmlNodeIds = new HashSet<>();
+        
+        // Variáveis temporárias para armazenar os dados de uma única aresta
+        int currentSource = -1;
+        int currentTarget = -1;
+        String currentName = "";
+
+        while ((line = br.readLine()) != null) {
+            line = line.trim();
+
+            if (line.contains("node [")) {
+                // Prepara para ler o ID do nó
+            } else if (line.startsWith("id ")) {
+                try {
+                    int nodeId = Integer.parseInt(line.split("\\s+")[1]);
+                    gmlNodeIds.add(nodeId);
+                } catch (NumberFormatException ignored) {}
+            }
+            
+            // 2. Processar Arestas
+            if (line.contains("edge [")) {
+                currentSource = -1;
+                currentTarget = -1;
+                currentName = "";
+            } else if (line.startsWith("source ")) {
+                currentSource = Integer.parseInt(line.split("\\s+")[1]);
+            } else if (line.startsWith("target ")) {
+                currentTarget = Integer.parseInt(line.split("\\s+")[1]);
+            } else if (line.startsWith("name ")) {
+                 int start = line.indexOf('"');
+                 int end = line.lastIndexOf('"');
+                 if (start != -1 && end != -1 && end > start) {
+                     // Extrai e limpa o nome da rua.
+                     currentName = line.substring(start + 1, end)
+                                .replace("&#243;", "ó")
+                                .replace("&#237;", "í")
+                                .replace("&#227;", "ã")
+                                .replace("&#225;", "á")
+                                .replace("&#224;", "à")
+                                .replace("&#231;", "ç")
+                                .replace("&#250;", "ú")
+                                .replace("&#245;", "õ")
+                                .replace("&#233;", "é")
+                                .replace("&#226;", "â")
+                                .replace("&#225;", "á")
+                                .replace("&#250;", "ú")
+                                .replace("&#237;", "í")
+                                .replace("&#244;", "ô")
+                                .replace("\\u00e1", "á")
+                                .replace("\\u00f4", "ô");
+                 }
+            } else if (line.startsWith("]") && currentSource != -1 && currentTarget != -1) {
+                // Fim de um bloco 'edge' válido. Armazena os dados.
+                tempSources.add(currentSource);
+                tempTargets.add(currentTarget);
+                tempNames.add(currentName);
+                
+                // Limpa os IDs temporários para a próxima aresta
+                currentSource = -1;
+                currentTarget = -1;
+            }
+        }
+        br.close();
+        
+        // 1. Determina o número total de nós.
+        int nodesCount = gmlNodeIds.isEmpty() ? 0 : Collections.max(gmlNodeIds) + 1;
+
+        // 2. Cria o objeto Graph com o número de nós.
+        Graph g = new Graph(nodesCount);
+
+        // 3. Adiciona as arestas ao grafo.
+        int minSize = tempSources.size();
+        for (int i = 0; i < minSize; i++) {
+            int gmlSource = tempSources.get(i);
+            int gmlTarget = tempTargets.get(i);
+            String name = tempNames.get(i);
+
+            // Mapeia GML ID (0-based) para o seu nó (1-based, como esperado pelo seu Dijkstra)
+            int mappedSource = gmlSource + 1;
+            int mappedTarget = gmlTarget + 1;
+            
+            // Adiciona aresta com peso 1 (fixo) e o nome extraído.
+            g.edges.add(new Edge(mappedSource, mappedTarget, 1, name));
+            g.quantity++; 
+        }
+
+        return g;
+    }
+
+    
+
 
     // ----- calcula o peso total do grafo -----
     public int getTotalWeight() {
@@ -176,10 +282,10 @@ public class Graph {
         for (int i = 1; i <= n; i++) {
 
             if (nodeTable[i][1] == Integer.MAX_VALUE) {
-                System.out.println("Node " + i + " = INF (sem caminho)");
+                System.out.println("Node " + i + " = INF");
             } else {
 
-                System.out.print("Node " + i + " = " + nodeTable[i][1] + " | Caminho: ");
+                System.out.print("Node " + i + " = " + nodeTable[i][1] + " | Path: ");
 
                 //caminho invertido
                 ArrayList<Integer> path = new ArrayList<>();

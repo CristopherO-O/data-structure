@@ -81,13 +81,13 @@ public class PERT {
         }
 
         // imprimir resultados
-        System.out.println("Tempos mais cedo (Early): " + Arrays.toString(Arrays.copyOfRange(early,1,n+1)));
-        System.out.println("Tempos mais tarde (Late): " + Arrays.toString(Arrays.copyOfRange(late,1,n+1)));
-        System.out.println("Caminho crítico:");
+        System.out.println("Earliest times: " + Arrays.toString(Arrays.copyOfRange(early,1,n+1)));
+        System.out.println("Latest times: " + Arrays.toString(Arrays.copyOfRange(late,1,n+1)));
+        System.out.println("Critical Path:");
         for (Edge e : criticalPath) {
             System.out.println(e.getNode1() + " -> " + e.getNode2() + " (dur: " + e.getWeight() + ")");
         }
-        System.out.println("Duração total do projeto: " + maxTime);
+        System.out.println("Total project duration: " + maxTime);
     }
 
 

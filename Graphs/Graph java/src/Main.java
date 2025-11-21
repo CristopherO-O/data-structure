@@ -6,10 +6,41 @@
 
 package src;
 
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 public class Main {
     public static void main(String[] args) {
         try {
-            Graph g = Graph.loadGraphFromFile("Graph.txt");
+            Graph g = null;
+
+        String[] options = {"TXT", "GML"};
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Escolha o tipo de arquivo para carregar:",
+            "Carregar Grafo",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+            try {
+                if(choice == 0){
+                    g = Graph.loadGraphFromFile("Graph.txt");
+                } else if(choice == 1){ 
+                    g = Graph.loadGraphFromGML("sjdr.gml");
+                } else {
+                    System.exit(0);
+                }
+            } catch(IOException e){
+                JOptionPane.showMessageDialog(null, "Erro ao carregar o grafo: " + e.getMessage());
+                System.exit(0);
+            }
+
+
 
             Interface inter = new Interface(g);
             javax.swing.JFrame frame = new javax.swing.JFrame();
@@ -19,17 +50,17 @@ public class Main {
             topPanel.setLayout(new java.awt.FlowLayout());
 
             // Botao adicionar aresta
-            javax.swing.JButton btnAdd = new javax.swing.JButton("Adicionar aresta");
+            javax.swing.JButton btnAdd = new javax.swing.JButton("Add Edge");
             btnAdd.addActionListener(e -> inter.addArestaManual());
             topPanel.add(btnAdd);
 
             // Botao calcular dijkstra
-            javax.swing.JButton btnDijk = new javax.swing.JButton("Calcular Dijkstra");
+            javax.swing.JButton btnDijk = new javax.swing.JButton("Dijkstra");
             btnDijk.addActionListener(e -> inter.calcularDijkstra());
             topPanel.add(btnDijk);
 
             // Botao de calcular PERT
-            javax.swing.JButton btnPERT = new javax.swing.JButton("Calcular PERT");
+            javax.swing.JButton btnPERT = new javax.swing.JButton("PERT");
             btnPERT.addActionListener(e -> inter.calcularPERT());
             topPanel.add(btnPERT);
 
@@ -37,6 +68,17 @@ public class Main {
             javax.swing.JButton btnAGM = new javax.swing.JButton("AGM");
             btnAGM.addActionListener(e -> inter.calcularAGM());
             topPanel.add(btnAGM);
+
+            // Botao Ford-Fulkerson
+            javax.swing.JButton btnFORD = new javax.swing.JButton("Ford-Fulkerson");
+            btnFORD.addActionListener(e -> inter.calculaForFulkerson());
+            topPanel.add(btnFORD);
+
+            // Botao Cobertura Minima
+            javax.swing.JButton btnCOVER = new javax.swing.JButton("Minimum Cover");
+            btnCOVER.addActionListener(e -> inter.calcularCobertura());
+            topPanel.add(btnCOVER);
+
 
             // Adiciona o painel ao topo da janela
             frame.add(topPanel, java.awt.BorderLayout.NORTH);
@@ -46,7 +88,7 @@ public class Main {
             bottomPanel.setLayout(new java.awt.FlowLayout());
 
             // Botao Clear
-            javax.swing.JButton btnClear = new javax.swing.JButton("Limpar Resultados");
+            javax.swing.JButton btnClear = new javax.swing.JButton("Clear Results");
             btnClear.addActionListener(e -> inter.clearPath());
             bottomPanel.add(btnClear);
 
@@ -66,7 +108,7 @@ public class Main {
             new Thread(inter).start();
 
         } catch (Exception e) {
-            System.out.println("Erro ao carregar o grafo:");
+            System.out.println("Error loading Graph:");
             e.printStackTrace();
         }
     }

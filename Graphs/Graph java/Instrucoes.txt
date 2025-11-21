@@ -1,33 +1,28 @@
-os arquivos da pasta são:
-    src:
-        todo o codigo do prgrama (a IA me ajudou em muita coisa mas eu fiz pra aprender)
-    Graph:
-        um arquivo txt que carrega um grafo orientado
-    
----------------------------------------------------------------------------------
-esse programa é o mesmo que eu desenvolvi para as atividades anteriores eu só implementei
-coisas novas requeridas nelas
-
 compile e rode no diretorio do Graph Java
 para compilar:
     javac src/*.java
 
 para executar:
     java -cp . src.Main
-
-
 ---------------------------------------------------------------------------------
 funções:
 -Carrega o grafo de um arquivo e o desenha na tela de forma circular.
--Arrastar e reposicionar os nós
+-Arrastar e reposicionar os nos
 -botao inserir aresta: insere nova aresta e pode adicionar novos nos
 -botao dijkistra: calcula o menor caminho entre dois pontos
 -botao PERT: Calcula PERT e exibe o caminho critico e o menor e maior tempo em cada no
 -botao Limpar caminho: apaga os resultados como do dijkstra, PERT e AGM
 -botao agm que mostra a arvore geradora minima e peso
+-botao FordFulkerson para calcular fluxo maximo
 ---------------------------------------------------------------------------------
 Atualizações:
-
+-codigo agora consegue ler .gml (altissimo em gpt)
+-mudança na criacao do mapa de nos, quando for maior que 100 ele não imprime mais em circulo
+-alterações na logica e na estrutura dos edges para poder encaixar nome das ruas
+-correção na exibição do numero de nos e arestas
+-grafos agora podem se extender indefinidamente para melhorar a exibição de grafos grandes
+-camera para dar zoom e mover pelo grafo
+-mudança na logica de desenho por conta da camera
+-botão Minimum Cover
 ---------------------------------------------------------------------------------
-é dificil definir uma saida esperada po para esse programa
-a arvore geradora minima é desenhada
+PARA ESSE EXERCICIO CARREGAR COM A OPÇÃO GML 
