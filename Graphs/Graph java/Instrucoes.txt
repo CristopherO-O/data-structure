@@ -1,18 +1,33 @@
 os arquivos da pasta são:
-    Graph.h:
-        A Estrutura do grafo
-    Graph.c:
-        A implementação das funções do TAD
-    Graph.txt:
-        o arquivo que contem o grafo a ser lido
-    Dijkstra.c:
-        Onde esta a main e a implementação do algoritimo de Dijkstra
-
-
+    src:
+        todo o codigo do prgrama (a IA me ajudou em muita coisa mas eu fiz pra aprender)
+    Graph:
+        um arquivo txt que carrega um grafo orientado
+    
 ---------------------------------------------------------------------------------
+esse programa é o mesmo que eu desenvolvi para as atividades anteriores eu só implementei
+coisas novas requeridas nelas
+
+compile e rode no diretorio do Graph Java
 para compilar:
     javac src/*.java
 
 para executar:
     java -cp . src.Main
-    
+
+
+---------------------------------------------------------------------------------
+funções:
+-Carrega o grafo de um arquivo e o desenha na tela de forma circular.
+-Arrastar e reposicionar os nós
+-botao inserir aresta: insere nova aresta e pode adicionar novos nos
+-botao dijkistra: calcula o menor caminho entre dois pontos
+-botao PERT: Calcula PERT e exibe o caminho critico e o menor e maior tempo em cada no
+-botao Limpar caminho: apaga os resultados como do dijkstra, PERT e AGM
+-botao agm que mostra a arvore geradora minima e peso
+---------------------------------------------------------------------------------
+Atualizações:
+
+---------------------------------------------------------------------------------
+é dificil definir uma saida esperada po para esse programa
+a arvore geradora minima é desenhada

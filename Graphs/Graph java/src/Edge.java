@@ -1,3 +1,10 @@
+/*
+ * Autor: Cristopher Resende
+ * Data: 20/11/2025
+ * Descrição: essa classe cria a estrutura das arestas
+ */
+
+
 package src;
 public class Edge{
     private final int node1;

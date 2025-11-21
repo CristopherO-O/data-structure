@@ -1,3 +1,9 @@
+/*
+ * Autor: Cristopher Resende
+ * Data: 20/11/2025
+ * Descrição: estrutura do Grafo com ArraList de arestas quando eu decidi mudar pra lista de adjacencia ja era tarde de mais
+ */
+
 package src;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -71,8 +77,46 @@ public class Graph {
 
         return g;
     }
+
+    // ----- calcula o peso total do grafo -----
+    public int getTotalWeight() {
+        int sum = 0;
+        for (Edge e : edges) sum += e.getWeight();
+        return sum;
+    }
+
+
+    //----- verifica se o grafo é um Directed Acyclic Graph -----
+    public boolean isDAG() {
+        int n = this.nodesNum;
+        boolean[] visited = new boolean[n + 1];
+        boolean[] recStack = new boolean[n + 1];
+
+        for (int i = 1; i <= n; i++)
+            if (dfsCycle(i, visited, recStack)) return false;
+
+        return true;
+    }
+
+    // ----- verifica a ciclicidade do grado -----
+    private boolean dfsCycle(int node, boolean[] visited, boolean[] recStack) {
+        if (recStack[node]) return true;
+        if (visited[node]) return false;
+
+        visited[node] = true;
+        recStack[node] = true;
+
+        for (Edge e : this.edges) {
+            if (e.getNode1() == node) {
+                if (dfsCycle(e.getNode2(), visited, recStack)) return true;
+            }
+        }
+
+        recStack[node] = false;
+        return false;
+    }
    
-    // ----- Dijkstra -----
+    // ----- Dijkstra padrão (versão requerida) -----
     public void dijkstra(int origin) {
 
         int n = this.nodesNum;
@@ -158,7 +202,7 @@ public class Graph {
         }
     }
     
-
+    // ----- dijkstra interface (adaptado para a interface grafica) -----
     public PathResult dijkstraPath(int origin, int target) {
 
         int n = this.nodesNum;
